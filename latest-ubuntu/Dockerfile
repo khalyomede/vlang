@@ -14,4 +14,7 @@ FROM ubuntu:20.04
 COPY --from=build /opt/v /opt/v
 COPY --from=build /usr/local/bin /usr/local/bin
 
-RUN apt update && apt upgrade --yes && apt install --yes build-essential && apt clean && apt autoremove
+ENV CC="gcc"
+ENV VFLAGS="-cc gcc"
+
+RUN apt update && apt upgrade --yes && apt install --yes build-essential libssl-dev git && apt clean && apt autoremove
