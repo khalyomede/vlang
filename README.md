@@ -23,6 +23,7 @@ I created these Docker containers to have disposable container for given V versi
 ## Examples
 
 - [1. Using Docker Compose](#1-using-docker-compose)
+- [2. Avoid loosing v package using Docker Compose](#2-avoid-loosing-v-package-using-docker-compose)
 
 ### 1. Using Docker Compose
 
@@ -51,6 +52,24 @@ Finally, check v is executable:
 $ docker-compose run v --version
 V 0.2.2 f4486d7
 ```
+
+### 2. Avoid loosing v package using Docker Compose
+
+V manages modules on a OS wide folder (like Python), under `/root/.vmodules` (on Linux based OS). In this example, we will mount this folder in our project to keep installed modules.
+
+```yml
+version: "3"
+services:
+  v:
+    image: khalyomede/vlang:latest-alpine
+    entrypoint: v
+    volumes:
+      - .:/home/alpine
+      - ./docker-data/v/root/.vmodules:/root/.vmodules
+    working_dir: /home/alpine
+```
+
+This will create a new `docker-data/v/root/.vmodules` folder in your working folder.
 
 ## Avaialble containers
 
