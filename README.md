@@ -84,9 +84,9 @@ This will create a new `docker-data/v/root/.vmodules` folder in your working fol
 Compile the images
 
 ```bash
-docker build --no-cache latest-alpine -t khalyomede/vlang:latest-alpine
-docker build --no-cache latest-ubuntu -t khalyomede/vlang:latest-ubuntu
-docker build --no-cache latest-debian -t khalyomede/vlang:latest-debian
+docker build --no-cache src/latest-alpine -t khalyomede/vlang:latest-alpine
+docker build --no-cache src/latest-ubuntu -t khalyomede/vlang:latest-ubuntu
+docker build --no-cache src/latest-debian -t khalyomede/vlang:latest-debian
 ```
 
 Create a docker-compose.yml file
@@ -95,7 +95,7 @@ Create a docker-compose.yml file
 version: "3"
 services:
   v:
-    build: ./latest-alpine
+    build: ./src/latest-alpine
     entrypoint: v
     volumes:
       - .:/home/alpine
