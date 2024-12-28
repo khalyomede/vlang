@@ -12,13 +12,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build alpine image
+      - name: Build Alpine image
         run: docker build --no-cache src/latest-alpine -t khalyomede/vlang:latest-alpine
       - name: Build Debian image
         run: docker build --no-cache src/latest-debian -t khalyomede/vlang:latest-debian
       - name: Build Ubuntu image
         run: docker build --no-cache src/latest-ubuntu -t khalyomede/vlang:latest-ubuntu
-      - name: Push alpine image
+      - name: Push Alpine image
         run: docker push khalyomede/vlang:latest-alpine
       - name: Push Debian image
         run: docker push khalyomede/vlang:latest-debian
