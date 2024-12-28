@@ -73,11 +73,7 @@ This will create a new `docker-data/v/root/.vmodules` folder in your working fol
 
 ## Avaialble containers
 
-| OS              | Tag                            |
-|-----------------|--------------------------------|
-| Alpine 3.13.5   | khalyomede/vlang:latest-alpine |
-| Ubuntu 20.04    | khalyomede/vlang:latest-ubuntu |
-| Debian 9 (Slim) | khalyomede/vlang:latest-debian |
+Browse available tags at [https://hub.docker.com/r/khalyomede/vlang/tags](https://hub.docker.com/r/khalyomede/vlang/tags).
 
 ## Test
 
