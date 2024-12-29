@@ -24,6 +24,7 @@ I created these Docker containers to have disposable container for given V versi
 
 - [1. Using Docker Compose](#1-using-docker-compose)
 - [2. Avoid loosing v package using Docker Compose](#2-avoid-loosing-v-package-using-docker-compose)
+- [3. Refresh latest image](#3-refresh-latest-image)
 
 ### 1. Using Docker Compose
 
@@ -70,6 +71,18 @@ services:
 ```
 
 This will create a new `docker-data/v/root/.vmodules` folder in your working folder.
+
+### 3. Refresh latest image
+
+Let us say you used the `khalyomede/vlang:latest-alpine` image 3 months ago. You want to use it again for another project. The issue is that your V version will be the one 3 months ago.
+
+To fix this, simply call this command:
+
+```bash
+docker pull khalyomede/vlang:latest-alpine
+```
+
+Which will "force" download the latest version available of the image.
 
 ## Avaialble containers
 
