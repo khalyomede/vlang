@@ -1,4 +1,4 @@
-FROM debian:9-slim AS build
+FROM debian:12-slim AS build
 
 WORKDIR /opt/v
 
@@ -9,7 +9,7 @@ RUN git clone --depth 1 --single-branch --branch master https://github.com/vlang
 RUN make
 RUN /opt/v/v symlink
 
-FROM debian:9-slim
+FROM debian:12-slim
 
 COPY --from=build /opt/v /opt/v
 COPY --from=build /usr/local/bin /usr/local/bin
