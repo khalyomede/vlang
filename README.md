@@ -79,10 +79,38 @@ Let us say you used the `khalyomede/vlang:latest-alpine` image 3 months ago. You
 To fix this, simply call this command:
 
 ```bash
-docker pull khalyomede/vlang:latest-alpine
+docker compose pull v
 ```
 
-Which will "force" download the latest version available of the image.
+Where "v" is the name of the service that points to the image.
+
+When running `docker compose run v --version`, it should display the latest version the image you used for the service was built for.
+
+If your `docker-compose.yml` file use a custom version of the base image provided by this package, because you need a custom executable for example
+
+```yml
+services:
+  v:
+    build: ./docker/customized-v
+    entrypoint: v
+    working_dir: /home/alpine
+    volumes:
+      - .:/home/alpine
+```
+
+And your `docker/customized-v/Dockerfile` looks like this:
+
+```dockerfile
+FROM khalyomede/vlang:latest-alpine
+
+RUN apk add --no-cache zbar
+```
+
+and you wish this custom image to use the latest changes from the base `khalyomede/vlang:` image, run this command:
+
+```bash
+docker compose build --no-cache v
+```
 
 ## Avaialble containers
 
