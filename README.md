@@ -19,12 +19,14 @@ I created these Docker containers to have disposable container for given V versi
 - Provides containers for specific V version
 - Provide containers that is always up to date with the latest changes (master branch) of the V Github repository
 - Provide containers for Alpine Linux, Ubuntu and Debian
+- `v` user with is own folder for non-root scenarios
 
 ## Examples
 
 - [1. Using Docker Compose](#1-using-docker-compose)
 - [2. Avoid loosing v package using Docker Compose](#2-avoid-loosing-v-package-using-docker-compose)
 - [3. Refresh latest image](#3-refresh-latest-image)
+- [4. Use a non-root user](#4-use-a-non-root-user)
 
 ### 1. Using Docker Compose
 
@@ -110,6 +112,21 @@ and you wish this custom image to use the latest changes from the base `khalyome
 
 ```bash
 docker compose build --no-cache v
+```
+
+### 4. Use a non-root user
+
+For use cases when you need a restricted workspace, use the `v` user with its dedicated `/home/v` folder.
+
+```yml
+services:
+  v:
+    image: khalyomede/vlang:latest-alpine
+    entrypoint: v
+    user: v
+    working_dir: /home/v
+    volumes:
+      - .:/home/v
 ```
 
 ## Avaialble containers
