@@ -17,7 +17,13 @@ COPY --from=build /usr/local/bin /usr/local/bin
 ENV CC="gcc"
 ENV VFLAGS="-cc gcc"
 
-RUN apt update && apt upgrade --yes && apt install --yes build-essential libssl-dev git && apt clean && apt autoremove --yes
-
-RUN useradd -m -d /home/v -s /bin/bash v
-RUN chmod 755 /opt/v
+RUN apt update && \
+    apt upgrade --yes && \
+    apt install --yes --no-install-recommends \
+    build-essential \
+    libssl-dev \
+    git && \
+    apt clean && \
+    apt autoremove --yes && \
+    useradd -m -d /home/v -s /bin/bash v && \
+    chmod 755 /opt/v
