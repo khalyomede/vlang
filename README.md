@@ -39,8 +39,8 @@ services:
     image: khalyomede/vlang:latest-alpine
     entrypoint: v
     volumes:
-      - .:/home/alpine
-    working_dir: /home/alpine
+      - .:/root
+    working_dir: /root
 ```
 
 Then, startup your containers:
@@ -53,7 +53,7 @@ Finally, check v is executable:
 
 ```bash
 $ docker-compose run v --version
-V 0.2.2 f4486d7
+V 0.4.12 0df4435
 ```
 
 ### 2. Avoid loosing v package using Docker Compose
@@ -67,14 +67,19 @@ services:
     image: khalyomede/vlang:latest-alpine
     entrypoint: v
     volumes:
-      - .:/home/alpine
+      - .:/root
       - ./docker-data/v/root/.vmodules:/root/.vmodules
-    working_dir: /home/alpine
+    working_dir: /root
 ```
 
 This will create a new `docker-data/v/root/.vmodules` folder in your working folder.
 
 ### 3. Refresh latest image
+
+- [Using the base image](#using-the-base-image)
+- [Using a custom image](#using-a-custom-image)
+
+#### Using the base image
 
 Let us say you used the `khalyomede/vlang:latest-alpine` image 3 months ago. You want to use it again for another project. The issue is that your V version will be the one 3 months ago.
 
@@ -88,6 +93,8 @@ Where "v" is the name of the service that points to the image.
 
 When running `docker compose run v --version`, it should display the latest version the image you used for the service was built for.
 
+#### Using a custom image
+
 If your `docker-compose.yml` file use a custom version of the base image provided by this package, because you need a custom executable for example
 
 ```yml
@@ -95,9 +102,9 @@ services:
   v:
     build: ./docker/customized-v
     entrypoint: v
-    working_dir: /home/alpine
+    working_dir: /root
     volumes:
-      - .:/home/alpine
+      - .:/root
 ```
 
 And your `docker/customized-v/Dockerfile` looks like this:
