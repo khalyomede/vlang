@@ -1,0 +1,26 @@
+FROM alpine:3.23.2 AS build
+
+WORKDIR /opt/v
+
+RUN apk add --no-cache make git musl-dev gcc
+RUN git clone --depth 1 --single-branch --branch 0.5 https://github.com/vlang/v .
+RUN make
+RUN /opt/v/v symlink
+
+FROM alpine:3.23.2
+
+COPY --from=build /opt/v /opt/v
+COPY --from=build /usr/local/bin /usr/local/bin
+
+ENV CC="gcc"
+ENV VFLAGS="-cc gcc"
+
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    openssl-dev \
+    git && \
+    adduser -D -h /home/v -s /bin/sh v && \
+    chmod 755 /opt/v && \
+    mkdir -p /home/v && \
+    chown v:v /home/v
