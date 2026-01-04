@@ -166,6 +166,8 @@ services:
 Create an index.v file
 
 ```v
+module main
+
 fn main() {
   println("hello world")
 }
