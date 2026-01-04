@@ -1,4 +1,4 @@
-FROM alpine:3.22.1 AS build
+FROM alpine:3.23.2 AS build
 
 WORKDIR /opt/v
 
@@ -7,7 +7,7 @@ RUN git clone --depth 1 --single-branch --branch master https://github.com/vlang
 RUN make
 RUN /opt/v/v symlink
 
-FROM alpine:3.22.1
+FROM alpine:3.23.2
 
 COPY --from=build /opt/v /opt/v
 COPY --from=build /usr/local/bin /usr/local/bin
