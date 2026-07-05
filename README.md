@@ -145,9 +145,9 @@ Browse available tags at [https://hub.docker.com/r/khalyomede/vlang/tags](https:
 Compile the images
 
 ```bash
-docker build --no-cache src/latest-alpine -t khalyomede/vlang:latest-alpine
-docker build --no-cache src/latest-ubuntu -t khalyomede/vlang:latest-ubuntu
-docker build --no-cache src/latest-debian -t khalyomede/vlang:latest-debian
+docker buildx build --platform=linux/amd64,linux/arm64 --no-cache src/latest-alpine -t khalyomede/vlang:latest-alpine
+docker buildx build --platform=linux/amd64,linux/arm64 --no-cache src/latest-ubuntu -t khalyomede/vlang:latest-ubuntu
+docker buildx build --platform=linux/amd64,linux/arm64 --no-cache src/latest-debian -t khalyomede/vlang:latest-debian
 ```
 
 Create a docker-compose.yml file
