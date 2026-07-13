@@ -173,9 +173,28 @@ fn main() {
 }
 ```
 
-Startup your container and test
+Startup your container
 
 ```bash
-$ docker-compose run v run index.v
+docker compose build v
+```
+
+Check the version is the expected one
+
+```bash
+docker compose run --rm v version
+```
+
+```bash
+V 0.4.9 e1b9054
+```
+
+Check a simple hello world program runs successfuly
+
+```bash
+docker compose run v run index.v
+```
+
+```bash
 hello world
 ```
