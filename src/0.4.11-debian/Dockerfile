@@ -1,15 +1,40 @@
-FROM debian:12-slim AS build
+FROM debian:13.5-slim AS build
 
 WORKDIR /opt/v
 
-RUN apt update
-RUN apt upgrade --yes
-RUN apt install --yes build-essential git
-RUN git clone --depth 1 --single-branch --branch 0.4.11 https://github.com/vlang/v .
-RUN make
+ENV CC="gcc"
+ENV VFLAGS="-cc gcc"
+
+RUN apt update && \
+    apt upgrade --yes && \
+    apt install --yes build-essential git pkg-config libgc-dev && \
+    # V
+    git clone --no-checkout https://github.com/vlang/v . && \
+    git fetch --depth 1 origin 7cff857dea701f4058a94b43f63e4506cccdf16e && \
+    git checkout FETCH_HEAD && \
+    # V compiler
+    git clone --filter=blob:none --quiet https://github.com/vlang/vc ./vc && \
+    cd vc && \
+    VC_COMMIT=$(git log --format='%H %s' | grep -m1 ecf51a6ac8b28e91176d7e838c755ce4852664b9 | cut -d' ' -f1) && \
+    test -n "$VC_COMMIT" && \
+    git checkout "$VC_COMMIT"
+
+ARG TARGETARCH
+
+RUN case "$TARGETARCH" in \
+    amd64) TCC_BRANCH=thirdparty-linux-amd64 ;; \
+    arm64) TCC_BRANCH=thirdparty-linux-aarch64 ;; \
+    *) echo "unsupported TARGETARCH: $TARGETARCH" >&2; exit 1 ;; \
+    esac && \
+    git clone --filter=blob:none --quiet --branch "$TCC_BRANCH" https://github.com/vlang/tccbin ./thirdparty/tcc
+
+RUN cc -std=c99 -w -o v1 ./vc/v.c -lm -lpthread
+RUN ./v1 -no-parallel -o v2 cmd/v
+RUN ./v2 -o v cmd/v
+RUN rm -f v1 v2
 RUN /opt/v/v symlink
 
-FROM debian:12-slim
+FROM debian:13.5-slim
 
 COPY --from=build /opt/v /opt/v
 COPY --from=build /usr/local/bin /usr/local/bin
