@@ -33,7 +33,6 @@ I created these Docker containers to have disposable container for given V versi
 In this example, we will create a container that contains the v executable on Alpine Linux OS.
 
 ```yml
-version: "3"
 services:
   v:
     image: khalyomede/vlang:latest-alpine
@@ -46,14 +45,14 @@ services:
 Then, startup your containers:
 
 ```bash
-$ docker-compose up --dettach
+$ docker compose up --detach
 ```
 
 Finally, check v is executable:
 
 ```bash
-$ docker-compose run v --version
-V 0.4.12 0df4435
+$ docker compose run v --version
+V 0.5.2 92cf0f5
 ```
 
 ### 2. Avoid loosing v package using Docker Compose
@@ -118,7 +117,7 @@ RUN apk add --no-cache zbar
 and you wish this custom image to use the latest changes from the base `khalyomede/vlang:` image, run this command:
 
 ```bash
-docker compose build --no-cache v
+docker compose build --pull --no-cache v
 ```
 
 ### 4. Use a non-root user
@@ -136,7 +135,7 @@ services:
       - .:/home/v
 ```
 
-## Avaialble containers
+## Available containers
 
 Browse available tags at [https://hub.docker.com/r/khalyomede/vlang/tags](https://hub.docker.com/r/khalyomede/vlang/tags).
 
@@ -153,13 +152,13 @@ docker buildx build --platform=linux/amd64,linux/arm64 --no-cache src/latest-deb
 Create a docker-compose.yml file
 
 ```yml
-version: "3"
 services:
   v:
     build: ./src/latest-alpine
     entrypoint: v
     volumes:
       - .:/home/alpine
+      - ./docker-data/v/root/.vmodules:/root/.vmodules
     working_dir: /home/alpine
 ```
 
@@ -173,7 +172,7 @@ fn main() {
 }
 ```
 
-Startup your container
+Build your container
 
 ```bash
 docker compose build v
@@ -186,7 +185,7 @@ docker compose run --rm v version
 ```
 
 ```bash
-V 0.4.9 e1b9054
+V 0.5.2 92cf0f5
 ```
 
 Check a simple hello world program runs successfuly
@@ -197,4 +196,31 @@ docker compose run v run index.v
 
 ```bash
 hello world
+```
+
+Lastly, check packages can be installed:
+
+```bash
+docker compose run v install khalyomede.mime
+```
+
+And run a simple program using this package:
+
+```v
+// main.v
+import khalyomede.mime { Mime }
+
+fn main() {
+  mime_value := Mime.image_jpeg
+
+  println(mime_value)
+}
+```
+
+```bash
+docker compose run v run main.v
+```
+
+```bash
+image/jpeg
 ```
